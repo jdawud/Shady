@@ -1,0 +1,85 @@
+{
+  "" : {
+    "const-values" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/Shady-master.swiftconstvalues",
+    "dependencies" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/Shady-master.d",
+    "diagnostics" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/Shady-master.dia",
+    "emit-module-dependencies" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/Shady-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/Shady-master-emit-module.dia",
+    "swift-dependencies" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/Shady-master.swiftdeps"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/ShadyApp.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShadyApp.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShadyApp.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShadyApp.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/ContentView.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ContentView.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/ShaderView01.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView01.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView01.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView01.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/ShaderView02.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView02.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView02.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView02.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/ShaderView03.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView03.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView03.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView03.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/ShaderView04.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView04.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView04.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView04.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/ShaderView05.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView05.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView05.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView05.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/ShaderView06.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView06.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView06.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView06.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/ShaderView07.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView07.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView07.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView07.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/ShaderView08.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView08.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView08.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView08.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/ShaderView09.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView09.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView09.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView09.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/ShaderView10.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView10.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView10.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView10.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/ShaderView11.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView11.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView11.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/ShaderView11.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/Shady/Views/SilveryLiquidView.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/SilveryLiquidView.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/SilveryLiquidView.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/SilveryLiquidView.o"
+  },
+  "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "index-unit-output-path" : "/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/spshlwrx/Documents/Shady/build/Shady.build/Release-iphoneos/Shady.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  }
+}

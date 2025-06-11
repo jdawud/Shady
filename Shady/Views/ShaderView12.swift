@@ -1,15 +1,16 @@
 //
-//  NorthernLightsView.swift
+//  SilveryLiquidView.swift
 //  Shady
 //
-//  Created by Junaid Dawud on 11/8/24.
+//  Created by Junaid Dawud on 11/25/24.
 //
 
 import SwiftUI
 import MetalKit
 
-struct NorthernLightsView: UIViewRepresentable {
+struct TwelfthShaderView: UIViewRepresentable {
     @Binding var isAnimating: Bool
+    @State private var touchLocation: CGPoint = .zero
     
     func makeUIView(context: Context) -> MTKView {
         let mtkView = MTKView()
@@ -20,6 +21,10 @@ struct NorthernLightsView: UIViewRepresentable {
         mtkView.framebufferOnly = false
         mtkView.clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 1)
         mtkView.drawableSize = mtkView.frame.size
+        
+        let gestureRecognizer = UIPanGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handlePan(_:)))
+        mtkView.addGestureRecognizer(gestureRecognizer)
+        
         return mtkView
     }
     
@@ -32,14 +37,15 @@ struct NorthernLightsView: UIViewRepresentable {
     }
     
     class Coordinator: NSObject, MTKViewDelegate {
-        var parent: NorthernLightsView
+        var parent: TwelfthShaderView
         var device: MTLDevice!
         var commandQueue: MTLCommandQueue!
         var pipelineState: MTLRenderPipelineState!
         var time: Float = 0
         var isAnimating: Bool = true
+        var touchLocation: CGPoint = .zero
         
-        init(_ parent: NorthernLightsView) {
+        init(_ parent: TwelfthShaderView) {
             self.parent = parent
             super.init()
             
@@ -82,8 +88,13 @@ struct NorthernLightsView: UIViewRepresentable {
             renderEncoder.setVertexBytes(vertices, length: vertices.count * MemoryLayout<Float>.size, index: 0)
             renderEncoder.setRenderPipelineState(pipelineState)
             
-            var uniforms = Uniforms1(resolution: SIMD2<Float>(Float(view.drawableSize.width), Float(view.drawableSize.height)), time: time, padding: 0)
-            renderEncoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms1>.size, index: 0)
+            var uniforms = Uniforms(
+                resolution: SIMD2<Float>(Float(view.drawableSize.width), Float(view.drawableSize.height)),
+                time: time,
+                touch: SIMD2<Float>(Float(touchLocation.x), Float(view.bounds.height - touchLocation.y)),
+                padding: SIMD2<Float>(0, 0)
+            )
+            renderEncoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms>.size, index: 0)
             
             renderEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
             renderEncoder.endEncoding()
@@ -91,37 +102,34 @@ struct NorthernLightsView: UIViewRepresentable {
             commandBuffer.present(drawable)
             commandBuffer.commit()
         }
-    }
-}
-
-struct Uniforms1 {
-    var resolution: SIMD2<Float>
-    var time: Float
-    var padding: Float
-}
-
-struct SeventhShaderView: View {
-    @State private var isAnimating = true
-    
-    var body: some View {
-        ZStack {
-            
-            NorthernLightsView(isAnimating: $isAnimating)
-                .edgesIgnoringSafeArea(.all)
-            
-            VStack {
-                NavigationLink(destination: EighthShaderView()) {
-                    Text("What am I?")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.black.opacity(0.7))
-                        .cornerRadius(10)
-                }
-            }
+        
+        @objc func handlePan(_ gestureRecognizer: UIPanGestureRecognizer) {
+            touchLocation = gestureRecognizer.location(in: gestureRecognizer.view)
         }
     }
 }
 
+struct Uniforms {
+    var resolution: SIMD2<Float>
+    var time: Float
+    var touch: SIMD2<Float>
+    var padding: SIMD2<Float>
+}
 
+struct ShaderView12: View {
+    @State private var isAnimating = true
+    
+    var body: some View {
+        VStack {
+            TwelfthShaderView(isAnimating: $isAnimating)
+                .frame(height: 400)
+                .cornerRadius(20)
+                .shadow(radius: 10)
+            
+            Toggle("Animate", isOn: $isAnimating)
+                .padding()
+        }
+        .padding()
+    }
+}
 

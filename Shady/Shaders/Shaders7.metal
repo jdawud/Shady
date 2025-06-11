@@ -45,32 +45,57 @@ fragment float4 fragment_shader(VertexOut in [[stage_in]],
                                 constant Uniforms &uniforms [[buffer(0)]]) {
     float2 uv = in.uv;
     float2 resolution = uniforms.resolution;
-    float time = uniforms.time;
+    float time = uniforms.time * 5.0; // Much faster time scale
     
     float2 pos = uv * 2.0 - 1.0;
     pos.x *= resolution.x / resolution.y;
     
+    // Create rapid rotating movement
+    float2 rotatedPos = float2(
+        pos.x * cos(time) - pos.y * sin(time),
+        pos.x * sin(time) + pos.y * cos(time)
+    );
+    
     float3 color = float3(0.0);
     
-    // Base layer
-    for (float i = 1.0; i < 6.0; i++) {
-        float2 q = pos * (1.0 - i * 0.05);
-        q.y -= time * 0.1 - i * 0.2;
-        float strength = 1.0 / i;
-        color += float3(0.0, 0.3, 0.5) * strength * smoothstep(0.0, 0.1, noise(q * 3.0));
-    }
+    // Fast moving waves
+    float waves = sin(rotatedPos.x * 10.0 + time * 3.0) * 
+                 cos(rotatedPos.y * 8.0 - time * 4.0);
     
-    // Highlight layer
+    // Rapid color cycling
+    float3 color1 = float3(0.2 + 0.2 * sin(time * 2.0),
+                          0.3 + 0.2 * cos(time * 3.0),
+                          0.4 + 0.2 * sin(time * 4.0));
+    
+    // Moving noise patterns
     for (float i = 1.0; i < 4.0; i++) {
-        float2 q = pos * (1.0 - i * 0.1);
-        q.y -= time * 0.2 + i * 0.3;
-        float strength = 1.0 / i;
-        color += float3(0.2, 0.5, 0.3) * strength * smoothstep(0.0, 0.1, noise(q * 5.0));
+        float2 noisePos = rotatedPos;
+        noisePos.x += time * i * 0.5;
+        noisePos.y -= time * (5.0 - i) * 0.3;
+        
+        float noiseVal = noise(noisePos * (2.0 + i) + float2(waves));
+        color += color1 * noiseVal * (0.3 / i);
     }
     
-    // Adjust color and intensity
-    color = pow(color, float3(1.5));
-    color = smoothstep(0.0, 1.0, color);
+    // Add rapid swirling effect
+    float2 swirl = pos;
+    float swirlAngle = length(swirl) * 5.0 - time * 3.0;
+    swirl = float2(
+        swirl.x * cos(swirlAngle) - swirl.y * sin(swirlAngle),
+        swirl.x * sin(swirlAngle) + swirl.y * cos(swirlAngle)
+    );
+    
+    // Additional fast-moving noise layer
+    float swirlNoise = noise(swirl * 3.0 + time);
+    color += float3(0.2, 0.3, 0.4) * swirlNoise * 0.3;
+    
+    // Rapid color pulsing
+    float pulse = 0.8 + 0.2 * sin(time * 3.0);
+    color *= pulse;
+    
+    // Add some high-contrast edges
+    float edges = smoothstep(0.2, 0.8, noise(rotatedPos * 4.0 + time));
+    color = mix(color, color * 1.5, edges);
     
     return float4(color, 1.0);
 }
