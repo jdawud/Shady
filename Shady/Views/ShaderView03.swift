@@ -23,66 +23,76 @@ class MetalView3: MTKView {
         setup()
     }
 
+    // Configures the Metal view for ShaderView03.
     func setup() {
+        // Obtain the default Metal device.
         device = MTLCreateSystemDefaultDevice()
+        // Create a command queue.
         commandQueue = device!.makeCommandQueue()
 
+        // Create a render pipeline descriptor.
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
+        // Set the vertex and fragment shader functions (specific to ShaderView03).
         pipelineDescriptor.vertexFunction = device!.makeDefaultLibrary()?.makeFunction(name: "vertex_main3")
         pipelineDescriptor.fragmentFunction = device!.makeDefaultLibrary()?.makeFunction(name: "fragment_main3")
+        // Set the pixel format for the color attachment.
         pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
 
+        // Create the render pipeline state.
         pipelineState = try! device!.makeRenderPipelineState(descriptor: pipelineDescriptor)
 
+        // Set the pixel format for the MTKView.
         self.colorPixelFormat = .bgra8Unorm
     }
 
+    // Called for each frame to draw the content for ShaderView03.
     override func draw(_ rect: CGRect) {
+        // Ensure drawable and render pass descriptor are available.
         guard let drawable = currentDrawable,
               let renderPassDescriptor = currentRenderPassDescriptor else { return }
 
+        // Set the clear color (background).
         renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 1)
 
+        // Create command buffer and render encoder.
         let commandBuffer = commandQueue.makeCommandBuffer()!
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
 
+        // Set the render pipeline state.
         renderEncoder.setRenderPipelineState(pipelineState)
 
-        // Increment time to animate the background
-        time += 0.016
+        // Increment time uniform for animation.
+        time += 0.016 // Approx 60 FPS
+        // Pass 'time' to the fragment shader.
         renderEncoder.setFragmentBytes(&time, length: MemoryLayout<Float>.size, index: 0)
 
+        // Draw a full-screen quad.
         renderEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
+        // Finalize encoding.
         renderEncoder.endEncoding()
 
+        // Present the drawable and commit the command buffer.
         commandBuffer.present(drawable)
         commandBuffer.commit()
     }
 }
 
-struct ThirdShaderView: View {
+// Displays the shader effect for view 3 of 12.
+struct ShaderView03: View {
     var body: some View {
         ZStack {
-            MetalBackgroundView3() 
+            MetalBackgroundView3() // Embeds the Metal view for this shader.
                 .edgesIgnoringSafeArea(.all)
 
-            VStack {
-                
-                NavigationLink(destination: FourthShaderView()) {
-                    Text("Liquid Metal!")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.black.opacity(0.7))
-                        .cornerRadius(10)
-                }
-            }
+            // Removed NavigationLink and related VStack
         }
     }
 }
 
+// UIViewRepresentable wrapper for MetalView3, used in ShaderView03.
 struct MetalBackgroundView3: UIViewRepresentable {
     func makeUIView(context: Context) -> MetalView3 {
+        // Create and return an instance of MetalView3.
         return MetalView3(frame: .zero, device: MTLCreateSystemDefaultDevice())
     }
 
