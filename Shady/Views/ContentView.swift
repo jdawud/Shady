@@ -9,12 +9,16 @@ import SwiftUI
 
 struct ContentView: View {
     // State variable to keep track of the current view.
-    // Ranges from 0 to 12 (inclusive), corresponding to 13 different shader views.
+
+    // Ranges from 0 to 13 (inclusive), corresponding to 14 different shader views.
+
     @State private var currentViewIndex: Int = 0
 
     var body: some View {
         VStack {
-            // Conditionally display one of the 13 shader views
+
+            // Conditionally display one of the 14 shader views
+
             // based on the current value of currentViewIndex.
             if currentViewIndex == 0 {
                 ShaderView01()
@@ -40,15 +44,20 @@ struct ContentView: View {
                 ShaderView11()
             } else if currentViewIndex == 11 {
                 ShaderView12()
-            } else if currentViewIndex == 12 { // New case for ShaderView13
+
+            } else if currentViewIndex == 12 {
                 ShaderView13()
+            } else if currentViewIndex == 13 { // New case for ShaderView14
+                ShaderView14()
             }
 
             Button("Next Shader") {
                 // Increment the view index
                 currentViewIndex += 1
-                // If the index reaches 13 (for 13 views, 0-12), reset it to 0 to loop back to the first view
-                if currentViewIndex == 13 { // Updated condition for 13 views
+
+                // If the index reaches 14 (for 14 views, 0-13), reset it to 0 to loop back to the first view
+                if currentViewIndex == 14 { // Updated condition for 14 views
+
                     currentViewIndex = 0
                 }
             }
