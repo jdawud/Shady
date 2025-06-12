@@ -137,7 +137,7 @@ struct ShaderData {
 }
 
 // Displays the shader effect for view 6 of 12 (StarView).
-struct SixthShaderView: View {
+struct ShaderView06: View { // Renamed from SixthShaderView
     // State to control whether the StarView animation is active.
     @State private var isAnimating = true
     
