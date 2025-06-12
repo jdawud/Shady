@@ -105,7 +105,7 @@ class CloudMetalView: MTKView, MTKViewDelegate {
         // doesn't need to be read from (e.g., for post-processing effects).
         self.framebufferOnly = true
         self.preferredFramesPerSecond = 60 // Target frame rate for animations.
-        self.delegate = self // Set this class as the delegate to receive draw callbacks.
+        self.delegate = self // ERROR: Cannot assign value of type 'CloudMetalView' to type '(any MTKViewDelegate)?'
         // enableSetNeedsDisplay = false means the view will redraw continuously at preferredFramesPerSecond.
         // If true, redraws would only happen when setNeedsDisplay() is called.
         self.enableSetNeedsDisplay = false
@@ -115,7 +115,9 @@ class CloudMetalView: MTKView, MTKViewDelegate {
 
     // MTKViewDelegate method: Called when the MTKView's drawable size (viewport) changes.
     // This is important for shaders that depend on the aspect ratio or resolution.
+
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
+
         // Update the resolution uniform with the new size.
         // This ensures the shader can adapt to orientation changes or window resizing.
         resolution = simd_float2(Float(size.width), Float(size.height))
@@ -123,7 +125,9 @@ class CloudMetalView: MTKView, MTKViewDelegate {
 
     // MTKViewDelegate method: Called for each frame to be rendered.
     // This is the main rendering loop.
+
     func draw(in view: MTKView) {
+
         // Ensure a drawable (texture to render to), render pass descriptor,
         // command buffer, and render encoder can be created.
         guard let drawable = currentDrawable,
