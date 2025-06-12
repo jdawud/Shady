@@ -115,7 +115,9 @@ class CloudMetalView: MTKView, MTKViewDelegate {
 
     // MTKViewDelegate method: Called when the MTKView's drawable size (viewport) changes.
     // This is important for shaders that depend on the aspect ratio or resolution.
-    override func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) { // ERROR: Method does not override any method from its superclass
+
+    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
+
         // Update the resolution uniform with the new size.
         // This ensures the shader can adapt to orientation changes or window resizing.
         resolution = simd_float2(Float(size.width), Float(size.height))
@@ -123,7 +125,9 @@ class CloudMetalView: MTKView, MTKViewDelegate {
 
     // MTKViewDelegate method: Called for each frame to be rendered.
     // This is the main rendering loop.
-    override func draw(in view: MTKView) { // ERROR: Method does not override any method from its superclass
+
+    func draw(in view: MTKView) {
+
         // Ensure a drawable (texture to render to), render pass descriptor,
         // command buffer, and render encoder can be created.
         guard let drawable = currentDrawable,
