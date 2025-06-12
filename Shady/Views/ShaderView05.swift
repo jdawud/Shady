@@ -30,15 +30,18 @@ class MetalView5: MTKView {
             fatalError("Metal is not supported on this device")
         }
 
-        // Set pixel format before anything else
+        // Set pixel format for the MTKView.
         self.colorPixelFormat = .bgra8Unorm
         
+        // Create a command queue.
         commandQueue = device.makeCommandQueue()
+
+        // Access the default shader library.
         guard let library = device.makeDefaultLibrary() else {
             fatalError("Failed to create default shader library")
         }
 
-        // Load vertex and fragment functions
+        // Load vertex and fragment shader functions for this specific view.
         guard let vertexFunction = library.makeFunction(name: "vertex_main5") else {
             fatalError("Failed to load vertex function 'vertex_main5'")
         }
@@ -46,12 +49,13 @@ class MetalView5: MTKView {
             fatalError("Failed to load fragment function 'fragment_main5'")
         }
 
-        // Setup pipeline
+        // Configure the render pipeline descriptor.
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
         pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
 
+        // Create the render pipeline state.
         do {
             pipelineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
         } catch let error {
@@ -59,59 +63,61 @@ class MetalView5: MTKView {
         }
     }
 
+    // Called for each frame to draw the content for ShaderView05.
     override func draw(_ rect: CGRect) {
+        // Ensure necessary Metal objects are available.
         guard let drawable = currentDrawable,
               let renderPassDescriptor = currentRenderPassDescriptor,
               let pipelineState = pipelineState else { return }
 
+        // Set the background clear color.
         renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 1)
 
+        // Create command buffer and render encoder.
         let commandBuffer = commandQueue.makeCommandBuffer()!
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
 
-        // Set pipeline state and increment time
+        // Set the current render pipeline state.
         renderEncoder.setRenderPipelineState(pipelineState)
 
-        time += 0.016
+        // Update time for animation.
+        time += 0.016 // Approx 60 FPS
+        // Pass time to the fragment shader (buffer index 0).
         renderEncoder.setFragmentBytes(&time, length: MemoryLayout<Float>.size, index: 0)
 
-        // Define and set the resolution (view size in pixels)
+        // Get current drawable size for resolution.
         var resolution = SIMD2<Float>(Float(drawableSize.width), Float(drawableSize.height))
+        // Pass resolution to the fragment shader (buffer index 1).
         renderEncoder.setFragmentBytes(&resolution, length: MemoryLayout<SIMD2<Float>>.size, index: 1)
 
-        // Ensure the vertex data is properly set and encoded before drawing
+        // Draw a full-screen quad.
         renderEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
 
+        // Finalize encoding.
         renderEncoder.endEncoding()
         
-        // Commit and present the buffer
+        // Present the drawable and commit the buffer.
         commandBuffer.present(drawable)
         commandBuffer.commit()
     }
 }
 
-struct FifthShaderView: View {
+// Displays the shader effect for view 5 of 12.
+struct ShaderView05: View {
     var body: some View {
         ZStack {
-            MetalBackgroundView5() // Fifth Metal shader background
+            MetalBackgroundView5() // Embeds the Metal view for this shader.
                 .edgesIgnoringSafeArea(.all)
 
-            VStack {
-                NavigationLink(destination: SixthShaderView()) {
-                    Text("Lava Lamp!")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.black.opacity(0.7))
-                        .cornerRadius(10)
-                }
-            }
+            // Removed NavigationLink and related VStack
         }
     }
 }
 
+// UIViewRepresentable wrapper for MetalView5, used in ShaderView05.
 struct MetalBackgroundView5: UIViewRepresentable {
     func makeUIView(context: Context) -> MetalView5 {
+        // Create and return an instance of MetalView5.
         return MetalView5(frame: .zero, device: MTLCreateSystemDefaultDevice())
     }
 
