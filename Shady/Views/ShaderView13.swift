@@ -42,7 +42,8 @@ struct CloudMetalBackgroundView: UIViewRepresentable {
 
 // CloudMetalView: An MTKView subclass responsible for rendering the cloud shader.
 // It handles Metal setup, the draw loop, and delegate methods for MTKView.
-class CloudMetalView: MTKView {
+// Explicitly conforms to MTKViewDelegate for clarity, though MTKView itself adopts it.
+class CloudMetalView: MTKView, MTKViewDelegate {
     var commandQueue: MTLCommandQueue!        // Queue for sending commands to the GPU.
     var pipelineState: MTLRenderPipelineState! // Compiled shaders and pipeline configuration.
     var time: Float = 0                        // Time uniform, incremented each frame for animation.
