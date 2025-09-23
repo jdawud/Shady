@@ -138,6 +138,10 @@ class LavaMetalView: MTKView, MTKViewDelegate {
         // Incrementing by a fixed step related to frame rate helps achieve consistent animation speed.
         time += 1.0 / Float(self.preferredFramesPerSecond)
 
+        // Update resolution in case the drawable size changed since the last frame.
+        resolution = simd_float2(Float(view.drawableSize.width),
+                                 Float(view.drawableSize.height))
+
         // Configure the render command encoder:
         // Set the compiled render pipeline state.
         renderEncoder.setRenderPipelineState(pipelineState)
