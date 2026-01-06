@@ -6,11 +6,21 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5875FBAF2F0D9B5800FDF64E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5875FBAD2F0D9B5800FDF64E /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		5875FBAD2F0D9B5800FDF64E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		588033DE2CB4D493003EEC1A /* Shady.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shady.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		5875FBB12F0D9B7B00FDF64E /* Docs */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Docs;
+			sourceTree = "<group>";
+		};
 		588033E02CB4D493003EEC1A /* Shady */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Shady;
@@ -32,6 +42,8 @@
 		588033D52CB4D493003EEC1A = {
 			isa = PBXGroup;
 			children = (
+				5875FBAD2F0D9B5800FDF64E /* README.md */,
+				5875FBB12F0D9B7B00FDF64E /* Docs */,
 				588033E02CB4D493003EEC1A /* Shady */,
 				588033DF2CB4D493003EEC1A /* Products */,
 			);
@@ -61,6 +73,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				5875FBB12F0D9B7B00FDF64E /* Docs */,
 				588033E02CB4D493003EEC1A /* Shady */,
 			);
 			name = Shady;
@@ -109,6 +122,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5875FBAF2F0D9B5800FDF64E /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -75,7 +75,7 @@ Shady/
 
 ## License
 
-MIT License – See LICENSE file for details.
+Unlicensed experiment.
 
 ## Author
 
