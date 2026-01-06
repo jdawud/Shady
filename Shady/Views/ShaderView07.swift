@@ -1,9 +1,10 @@
 //
-//  NorthernLightsView.swift
+//  ShaderView07.swift
 //  Shady
 //
 //  Created by Junaid Dawud on 11/8/24.
 //
+//  Northern lights noise effect shader.
 
 import SwiftUI
 import MetalKit
@@ -60,9 +61,8 @@ struct NorthernLightsView: UIViewRepresentable {
             
             // Load shader functions from the default library.
             guard let library = device.makeDefaultLibrary() else { fatalError("Unable to create default library") }
-            // Assuming generic shader names; these should match the actual .metal file.
-            guard let vertexFunction = library.makeFunction(name: "vertex_shader") else { fatalError("Unable to create vertex function") }
-            guard let fragmentFunction = library.makeFunction(name: "fragment_shader") else { fatalError("Unable to create fragment function") }
+            guard let vertexFunction = library.makeFunction(name: "vertex_shader_07") else { fatalError("Unable to create vertex function") }
+            guard let fragmentFunction = library.makeFunction(name: "fragment_shader_07") else { fatalError("Unable to create fragment function") }
             
             // Configure the render pipeline.
             let pipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -105,8 +105,8 @@ struct NorthernLightsView: UIViewRepresentable {
             renderEncoder.setRenderPipelineState(pipelineState)
             
             // Prepare and set shader uniforms.
-            var uniforms = Uniforms1(resolution: SIMD2<Float>(Float(view.drawableSize.width), Float(view.drawableSize.height)), time: time, padding: 0)
-            renderEncoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms1>.size, index: 0)
+            var uniforms = Uniforms07(resolution: SIMD2<Float>(Float(view.drawableSize.width), Float(view.drawableSize.height)), time: time, padding: 0)
+            renderEncoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms07>.size, index: 0)
             
             // Draw the quad.
             renderEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
@@ -120,28 +120,18 @@ struct NorthernLightsView: UIViewRepresentable {
 }
 
 // Defines the structure for data passed as uniforms to the shader for NorthernLightsView.
-struct Uniforms1 {
+struct Uniforms07 {
     var resolution: SIMD2<Float> // Viewport resolution.
     var time: Float              // Elapsed time for animation.
     var padding: Float           // Padding for memory alignment if necessary.
 }
 
-// Displays the shader effect for view 7 of 12 (NorthernLightsView).
-// Note: The struct name was SeventhShaderView in the input, assuming it's ShaderView07 after refactoring.
+/// Displays a northern lights noise effect shader.
 struct ShaderView07: View {
-    // State to control animation of the NorthernLightsView.
     @State private var isAnimating = true
     
     var body: some View {
-        ZStack {
-            // Embed the NorthernLightsView for rendering the shader.
-            NorthernLightsView(isAnimating: $isAnimating)
-                .edgesIgnoringSafeArea(.all)
-            
-            // Removed NavigationLink and related VStack
-        }
+        NorthernLightsView(isAnimating: $isAnimating)
+            .edgesIgnoringSafeArea(.all)
     }
 }
-
-
-

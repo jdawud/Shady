@@ -1,9 +1,10 @@
 //
-//  EighthShaderView.swift
+//  ShaderView08.swift
 //  Shady
 //
 //  Created by Junaid Dawud on 10/8/24.
 //
+//  Rotating star shapes shader.
 
 import SwiftUI
 import MetalKit
@@ -80,8 +81,8 @@ class MetalView8: MTKView {
         // Set the current render pipeline state.
         renderEncoder.setRenderPipelineState(pipelineState)
 
-        // Update and pass the 'time' uniform for animation.
-        time += 0.016 // Approximately 60 FPS.
+        // Update and pass the 'time' uniform for animation based on frame rate.
+        time += 1.0 / Float(preferredFramesPerSecond)
         renderEncoder.setFragmentBytes(&time, length: MemoryLayout<Float>.size, index: 0)
 
         // Calculate and pass the 'resolution' uniform (drawable size).
@@ -118,14 +119,10 @@ struct MetalBackgroundView8: UIViewRepresentable {
     }
 }
 
-// Displays the shader effect for view 8 of 12.
+/// Displays rotating star shapes shader effect.
 struct ShaderView08: View {
     var body: some View {
-        ZStack {
-            MetalBackgroundView8() // Embeds the Metal view.
-                .edgesIgnoringSafeArea(.all)
-
-            // Removed NavigationLink and related VStack
-        }
+        MetalBackgroundView8()
+            .edgesIgnoringSafeArea(.all)
     }
 }

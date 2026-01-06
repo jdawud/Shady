@@ -2,9 +2,9 @@
 //  ShaderView13.swift
 //  Shady
 //
-//  Created by Jules on 22/7/24
-//  This file defines the SwiftUI View and Metal rendering setup for the 13th shader effect,
-//  which displays animated, procedurally generated clouds.
+//  Created by Jules on 22/7/24.
+//
+//  Animated procedural drifting clouds shader.
 //
 
 import SwiftUI

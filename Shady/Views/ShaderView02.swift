@@ -1,9 +1,10 @@
 //
-//  SecondShaderView.swift
+//  ShaderView02.swift
 //  Shady
 //
 //  Created by Junaid Dawud on 10/7/24.
 //
+//  Swirling color distortion shader.
 
 import SwiftUI
 import MetalKit
@@ -23,76 +24,55 @@ class MetalView2: MTKView {
         setup()
     }
 
-    // Configures the Metal view for ShaderView02.
+    /// Configures Metal device, command queue, and render pipeline.
     func setup() {
-        // Obtain the default Metal device.
         device = MTLCreateSystemDefaultDevice()
-        // Create a command queue.
         commandQueue = device!.makeCommandQueue()
 
-        // Create a render pipeline descriptor.
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
-        // Set the vertex and fragment shader functions (specific to ShaderView02).
         pipelineDescriptor.vertexFunction = device!.makeDefaultLibrary()?.makeFunction(name: "vertex_main2")
         pipelineDescriptor.fragmentFunction = device!.makeDefaultLibrary()?.makeFunction(name: "fragment_main2")
-        // Set the pixel format for the color attachment.
         pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
 
-        // Create the render pipeline state.
         pipelineState = try! device!.makeRenderPipelineState(descriptor: pipelineDescriptor)
-
-        // Set the pixel format for the MTKView.
         self.colorPixelFormat = .bgra8Unorm
     }
 
-    // Called for each frame to draw the content for ShaderView02.
+    /// Renders a frame with animated shader effect.
     override func draw(_ rect: CGRect) {
-        // Ensure drawable and render pass descriptor are available.
         guard let drawable = currentDrawable,
               let renderPassDescriptor = currentRenderPassDescriptor else { return }
 
-        // Set the clear color (background).
         renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0, green: 0, blue: 0, alpha: 1)
 
-        // Create command buffer and render encoder.
         let commandBuffer = commandQueue.makeCommandBuffer()!
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
 
-        // Set the render pipeline state.
         renderEncoder.setRenderPipelineState(pipelineState)
 
-        // Increment time uniform for animation.
-        time += 0.016 // Approx 60 FPS
-        // Pass 'time' to the fragment shader.
+        // Animate by incrementing time uniform based on frame rate
+        time += 1.0 / Float(preferredFramesPerSecond)
         renderEncoder.setFragmentBytes(&time, length: MemoryLayout<Float>.size, index: 0)
 
-        // Draw a full-screen quad.
         renderEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
-        // Finalize encoding.
         renderEncoder.endEncoding()
 
-        // Present the drawable and commit the command buffer.
         commandBuffer.present(drawable)
         commandBuffer.commit()
     }
 }
 
-// Displays the shader effect for view 2 of 12.
+/// Displays a swirling color distortion shader effect.
 struct ShaderView02: View {
     var body: some View {
-        ZStack {
-            MetalBackgroundView2() // Embeds the Metal view for this shader.
-                .edgesIgnoringSafeArea(.all)
-
-            // Removed NavigationLink and related VStack
-        }
+        MetalBackgroundView2()
+            .edgesIgnoringSafeArea(.all)
     }
 }
 
-// UIViewRepresentable wrapper for MetalView2, used in ShaderView02.
+/// UIViewRepresentable wrapper for MetalView2.
 struct MetalBackgroundView2: UIViewRepresentable {
     func makeUIView(context: Context) -> MetalView2 {
-        // Create and return an instance of MetalView2.
         return MetalView2(frame: .zero, device: MTLCreateSystemDefaultDevice())
     }
 

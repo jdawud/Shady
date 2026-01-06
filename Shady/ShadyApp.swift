@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import AVFoundation
 
+/// Main entry point for the Shady app - a Metal shader demo application.
 @main
 struct ShadyApp: App {
     var body: some Scene {

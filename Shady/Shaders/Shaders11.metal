@@ -43,14 +43,9 @@ inline float2 hash21(float p) {
 
 // Creates a single firework explosion
 float3 firework(float2 uv, float2 center, float time, float seed) {
-//    float2 delta = uv - center; // unused
-    
     // Reduced number of particles for better performance
     const int NUM_PARTICLES = 50;
     float3 color = float3(0.0);
-    
-    // Simple smooth start
-//    float easeIn = smoothstep(0.0, 0.2, time); // unused
     
     // Base color with minimum brightness
     float3 baseColor = float3(

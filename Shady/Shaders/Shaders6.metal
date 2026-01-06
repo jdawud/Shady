@@ -9,13 +9,13 @@
 using namespace metal;
 
 // Struct to pass data from Swift to the shader
-struct ShaderData {
+struct ShaderData06 {
     float2 resolution;
     float time;
 };
 
-// Vertex shader
-vertex float4 vertexShader(uint vertexID [[vertex_id]],
+// Vertex shader for Shader 06 (glowing metaball star effect)
+vertex float4 vertexShader06(uint vertexID [[vertex_id]],
                            constant float2 *vertices [[buffer(0)]]) {
     return float4(vertices[vertexID], 0, 1);
 }
@@ -25,9 +25,9 @@ float metaball(float2 p, float2 center, float radius) {
     return radius / length(p - center);
 }
 
-// Fragment shader
-fragment float4 fragmentShader(float4 position [[position]],
-                               constant ShaderData &shaderData [[buffer(0)]]) {
+// Fragment shader for Shader 06 (glowing metaball star effect)
+fragment float4 fragmentShader06(float4 position [[position]],
+                               constant ShaderData06 &shaderData [[buffer(0)]]) {
     float2 uv = position.xy / shaderData.resolution;
     float aspect = shaderData.resolution.x / shaderData.resolution.y;
     uv.x *= aspect;

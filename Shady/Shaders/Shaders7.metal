@@ -1,20 +1,21 @@
 #include <metal_stdlib>
 using namespace metal;
 
-struct VertexOut {
+struct VertexOut07 {
     float4 position [[position]];
     float2 uv;
 };
 
-struct Uniforms {
+struct Uniforms07 {
     packed_float2 resolution;
     float time;
     float padding; // Add padding to ensure 16-byte alignment
 };
 
-vertex VertexOut vertex_shader(uint vertexID [[vertex_id]],
+// Vertex shader for Shader 07 (northern lights noise effect)
+vertex VertexOut07 vertex_shader_07(uint vertexID [[vertex_id]],
                                constant float2 *vertices [[buffer(0)]]) {
-    VertexOut out;
+    VertexOut07 out;
     out.position = float4(vertices[vertexID], 0, 1);
     out.uv = (vertices[vertexID] + 1.0) * 0.5;
     return out;
@@ -25,7 +26,7 @@ float2 hash(float2 p) {
     return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
 }
 
-float noise(float2 p) {
+static inline float noise(float2 p) {
     const float K1 = 0.366025404;
     const float K2 = 0.211324865;
     
@@ -41,8 +42,9 @@ float noise(float2 p) {
     return dot(n, float3(70.0, 70.0, 70.0));
 }
 
-fragment float4 fragment_shader(VertexOut in [[stage_in]],
-                                constant Uniforms &uniforms [[buffer(0)]]) {
+// Fragment shader for Shader 07 (northern lights noise effect)
+fragment float4 fragment_shader_07(VertexOut07 in [[stage_in]],
+                                constant Uniforms07 &uniforms [[buffer(0)]]) {
     float2 uv = in.uv;
     float2 resolution = uniforms.resolution;
     float time = uniforms.time * 5.0; // Much faster time scale

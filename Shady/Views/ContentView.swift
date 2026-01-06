@@ -4,64 +4,30 @@
 //
 //  Created by Junaid Dawud on 10/7/24.
 //
+//  Main navigation view for the Shady shader playground.
+//  Uses a simple carousel model: tap "Next Shader" to cycle through
+//  16 Metal shader effects. Each effect is a self-contained SwiftUI view
+//  wrapping an MTKView subclass with its own vertex/fragment shaders.
+//
 
 import SwiftUI
 
+/// Main container view that manages navigation between shader effects.
+/// Displays one shader at a time with a button to cycle to the next effect.
 struct ContentView: View {
-    // State variable to keep track of the current view.
-
-    // Ranges from 0 to 14 (inclusive), corresponding to 15 different shader views.
-
+    /// Total number of shader views available in the app.
+    private let shaderCount = 16
+    
+    /// Current shader view index (0 to shaderCount-1).
     @State private var currentViewIndex: Int = 0
 
     var body: some View {
         VStack {
-
-            // Conditionally display one of the 15 shader views
-
-            // based on the current value of currentViewIndex.
-            if currentViewIndex == 0 {
-                ShaderView01()
-            } else if currentViewIndex == 1 {
-                ShaderView02()
-            } else if currentViewIndex == 2 {
-                ShaderView03()
-            } else if currentViewIndex == 3 {
-                ShaderView04()
-            } else if currentViewIndex == 4 {
-                ShaderView05()
-            } else if currentViewIndex == 5 {
-                ShaderView06()
-            } else if currentViewIndex == 6 {
-                ShaderView07()
-            } else if currentViewIndex == 7 {
-                ShaderView08()
-            } else if currentViewIndex == 8 {
-                ShaderView09()
-            } else if currentViewIndex == 9 {
-                ShaderView10()
-            } else if currentViewIndex == 10 {
-                ShaderView11()
-            } else if currentViewIndex == 11 {
-                ShaderView12()
-
-            } else if currentViewIndex == 12 {
-                ShaderView13()
-            } else if currentViewIndex == 13 {
-                ShaderView14()
-            } else if currentViewIndex == 14 {
-                ShaderView15()
-            }
-
+            // Display the currently selected shader view
+            currentShaderView
+            
             Button("Next Shader") {
-                // Increment the view index
-                currentViewIndex += 1
-
-                // If the index reaches 15 (for 15 views, 0-14), reset it to 0 to loop back to the first view
-                if currentViewIndex == 15 {
-
-                    currentViewIndex = 0
-                }
+                currentViewIndex = (currentViewIndex + 1) % shaderCount
             }
             .font(.headline)
             .foregroundColor(.white)
@@ -70,8 +36,31 @@ struct ContentView: View {
             .cornerRadius(10)
         }
     }
+    
+    /// Returns the appropriate shader view based on current index.
+    @ViewBuilder
+    private var currentShaderView: some View {
+        switch currentViewIndex {
+        case 0:  ShaderView01()
+        case 1:  ShaderView02()
+        case 2:  ShaderView03()
+        case 3:  ShaderView04()
+        case 4:  ShaderView05()
+        case 5:  ShaderView06()
+        case 6:  ShaderView07()
+        case 7:  ShaderView08()
+        case 8:  ShaderView09()
+        case 9:  ShaderView10()
+        case 10: ShaderView11()
+        case 11: ShaderView12()
+        case 12: ShaderView13()
+        case 13: ShaderView14()
+        case 14: ShaderView15()
+        case 15: ShaderView16()
+        default: ShaderView01()
+        }
+    }
 }
-
 
 #Preview {
     ContentView()

@@ -1,21 +1,21 @@
 #include <metal_stdlib>
 using namespace metal;
 
-struct VertexOut {
+struct VertexOut12 {
     float4 position [[position]];
     float2 uv;
 };
 
-struct Uniforms {
+struct Uniforms12 {
     float2 resolution;
     float time;
     float2 touch;
     float2 padding; // Ensure 16-byte alignment
 };
 
-vertex VertexOut vertex_shader_12(uint vertexID [[vertex_id]],
+vertex VertexOut12 vertex_shader_12(uint vertexID [[vertex_id]],
                                constant float2 *vertices [[buffer(0)]]) {
-    VertexOut out;
+    VertexOut12 out;
     out.position = float4(vertices[vertexID], 0, 1);
     out.uv = (vertices[vertexID] + 1.0) * 0.5;
     return out;
@@ -35,8 +35,8 @@ inline float noise12(float2 p) {
                    dot(hash2(i + float2(1.0, 1.0)), f - float2(1.0, 1.0)), u.x), u.y);
 }
 
-fragment float4 fragment_shader_12(VertexOut in [[stage_in]],
-                                constant Uniforms &uniforms [[buffer(0)]]) {
+fragment float4 fragment_shader_12(VertexOut12 in [[stage_in]],
+                                constant Uniforms12 &uniforms [[buffer(0)]]) {
     float2 uv = in.uv;
     float2 resolution = uniforms.resolution;
     float time = uniforms.time;

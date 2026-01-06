@@ -1,9 +1,10 @@
 //
-//  SilveryLiquidView.swift
+//  ShaderView12.swift
 //  Shady
 //
 //  Created by Junaid Dawud on 11/25/24.
 //
+//  Interactive silvery liquid wave shader.
 
 import SwiftUI
 import MetalKit
@@ -13,9 +14,6 @@ import MetalKit
 struct TwelfthShaderView: UIViewRepresentable {
     // Binding to control animation state from the parent SwiftUI view.
     @Binding var isAnimating: Bool
-    // State for tracking touch location, though primarily managed by the Coordinator.
-    // This @State here might be redundant if Coordinator's touchLocation is the sole source of truth for the shader.
-    @State private var touchLocation: CGPoint = .zero
     
     // Creates and configures the underlying MTKView.
     func makeUIView(context: Context) -> MTKView {
@@ -38,10 +36,9 @@ struct TwelfthShaderView: UIViewRepresentable {
     
     // Updates the MTKView based on changes in SwiftUI state.
     func updateUIView(_ uiView: MTKView, context: Context) {
-        // Propagate the animation state to the coordinator.
+        // Propagate the animation state to the coordinator and pause/resume the view.
         context.coordinator.isAnimating = isAnimating
-        // Note: touchLocation from @State is not directly passed to coordinator here,
-        // as coordinator updates its own touchLocation via handlePan.
+        uiView.isPaused = !isAnimating
     }
     
     // Creates the Coordinator instance.
@@ -72,10 +69,9 @@ struct TwelfthShaderView: UIViewRepresentable {
             commandQueue = device.makeCommandQueue()
             
             // Load shader functions from the default Metal library.
-            // These names ("vertex_shader", "fragment_shader") must match the functions in the .metal file.
             guard let library = device.makeDefaultLibrary() else { fatalError("Unable to create default library") }
-            guard let vertexFunction = library.makeFunction(name: "vertex_shader") else { fatalError("Unable to create vertex function") }
-            guard let fragmentFunction = library.makeFunction(name: "fragment_shader") else { fatalError("Unable to create fragment function") }
+            guard let vertexFunction = library.makeFunction(name: "vertex_shader_12") else { fatalError("Unable to create vertex function") }
+            guard let fragmentFunction = library.makeFunction(name: "fragment_shader_12") else { fatalError("Unable to create fragment function") }
             
             // Configure the render pipeline descriptor.
             let pipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -122,13 +118,13 @@ struct TwelfthShaderView: UIViewRepresentable {
             // because Metal's fragment coordinate system often has (0,0) at the top-left,
             // while UIKit might have (0,0) at the bottom-left or top-left depending on context.
             // This inversion makes touch input align with visual output as expected.
-            var uniforms = Uniforms(
+            var uniforms = Uniforms12(
                 resolution: SIMD2<Float>(Float(view.drawableSize.width), Float(view.drawableSize.height)),
                 time: time,
                 touch: SIMD2<Float>(Float(touchLocation.x), Float(view.bounds.height - touchLocation.y)),
                 padding: SIMD2<Float>(0, 0) // Padding for memory alignment if needed.
             )
-            renderEncoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms>.size, index: 0)
+            renderEncoder.setFragmentBytes(&uniforms, length: MemoryLayout<Uniforms12>.size, index: 0)
             
             // Draw the quad.
             renderEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: 4)
@@ -151,31 +147,28 @@ struct TwelfthShaderView: UIViewRepresentable {
 }
 
 // Defines the structure for uniforms passed to the shader for TwelfthShaderView.
-struct Uniforms {
+struct Uniforms12 {
     var resolution: SIMD2<Float>  // Viewport resolution (width, height).
     var time: Float               // Elapsed time for animation.
     var touch: SIMD2<Float>       // Current touch coordinates (x, y).
     var padding: SIMD2<Float>     // Padding to ensure memory alignment, if necessary.
 }
 
-// Displays the interactive "Silvery Liquid" shader (view 12 of 12).
+/// Displays an interactive silvery liquid wave shader effect.
 struct ShaderView12: View {
-    // State to control whether the animation is active.
     @State private var isAnimating = true
     
     var body: some View {
         VStack {
-            // The Metal shader view.
             TwelfthShaderView(isAnimating: $isAnimating)
-                .frame(height: 400) // Give it a fixed height.
-                .cornerRadius(20)   // Apply styling.
+                .frame(height: 400)
+                .cornerRadius(20)
                 .shadow(radius: 10)
             
-            // Toggle to play/pause the animation.
             Toggle("Animate", isOn: $isAnimating)
-                .padding() // Add some padding around the toggle.
+                .padding()
         }
-        .padding() // Add padding around the VStack content.
+        .padding()
     }
 }
 

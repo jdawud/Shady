@@ -1,9 +1,10 @@
 //
-//  LavaLampView.swift
+//  ShaderView06.swift
 //  Shady
 //
 //  Created by Junaid Dawud on 11/5/24.
 //
+//  Glowing metaball star effect shader.
 
 import SwiftUI
 import MetalKit
@@ -68,8 +69,8 @@ struct StarView: UIViewRepresentable {
             
             // Load shader functions from the default Metal library.
             let library = device.makeDefaultLibrary()
-            let vertexFunction = library?.makeFunction(name: "vertexShader") // Generic vertex shader name
-            let fragmentFunction = library?.makeFunction(name: "fragmentShader") // Generic fragment shader name
+            let vertexFunction = library?.makeFunction(name: "vertexShader06")
+            let fragmentFunction = library?.makeFunction(name: "fragmentShader06")
             
             // Configure the render pipeline descriptor.
             let pipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -81,8 +82,7 @@ struct StarView: UIViewRepresentable {
             do {
                 pipelineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
             } catch {
-                // Handle pipeline state creation errors.
-                print("Unable to create pipeline state: \(error)")
+                fatalError("⚠️ Unable to create pipeline state: \(error)")
             }
         }
         
@@ -107,13 +107,13 @@ struct StarView: UIViewRepresentable {
             
             // Prepare shader data (resolution and time).
             let size = view.drawableSize
-            var shaderData = ShaderData(resolution: SIMD2<Float>(Float(size.width), Float(size.height)), time: time, padding: 0)
+            var shaderData = ShaderData06(resolution: SIMD2<Float>(Float(size.width), Float(size.height)), time: time, padding: 0)
             
             // Encode rendering commands.
             // Set vertex data (for the quad).
             renderEncoder.setVertexBytes(&vertices, length: vertices.count * MemoryLayout<Float>.size, index: 0)
             // Set fragment shader data (uniforms).
-            renderEncoder.setFragmentBytes(&shaderData, length: MemoryLayout<ShaderData>.size, index: 0)
+            renderEncoder.setFragmentBytes(&shaderData, length: MemoryLayout<ShaderData06>.size, index: 0)
             // Set the render pipeline state.
             renderEncoder.setRenderPipelineState(pipelineState)
             // Draw the primitives (a triangle strip forming a quad).
@@ -130,24 +130,18 @@ struct StarView: UIViewRepresentable {
 
 // ShaderData struct to match Metal shader's memory layout for uniforms.
 // This typically includes data like resolution, time, mouse position, etc.
-struct ShaderData {
+struct ShaderData06 {
     var resolution: SIMD2<Float> // Viewport resolution in pixels.
     var time: Float              // Time elapsed, for animations.
     var padding: Float           // Padding to ensure correct memory alignment if needed.
 }
 
-// Displays the shader effect for view 6 of 12 (StarView).
-struct ShaderView06: View { // Renamed from SixthShaderView
-    // State to control whether the StarView animation is active.
+/// Displays a glowing metaball star effect shader.
+struct ShaderView06: View {
     @State private var isAnimating = true
     
     var body: some View {
-        ZStack {
-            
-            StarView(isAnimating: $isAnimating)
-                .edgesIgnoringSafeArea(.all)
-            
-            // Removed NavigationLink and related VStack
-        }
+        StarView(isAnimating: $isAnimating)
+            .edgesIgnoringSafeArea(.all)
     }
 }

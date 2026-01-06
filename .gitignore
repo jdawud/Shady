@@ -1,0 +1,17 @@
+# Xcode build artifacts
+build/
+DerivedData/
+
+# Xcode user-specific files
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Temporary files
+*.swp
+*~

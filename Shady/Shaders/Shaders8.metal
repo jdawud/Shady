@@ -8,12 +8,12 @@
 #include <metal_stdlib>
 using namespace metal;
 
-struct VertexOut {
+struct VertexOut08 {
     float4 position [[position]];
     float2 uv;
 };
 
-vertex VertexOut vertex_main8(uint vertexID [[vertex_id]]) {
+vertex VertexOut08 vertex_main8(uint vertexID [[vertex_id]]) {
     float2 positions[4] = {
         float2(-1.0, -1.0),
         float2( 1.0, -1.0),
@@ -21,7 +21,7 @@ vertex VertexOut vertex_main8(uint vertexID [[vertex_id]]) {
         float2( 1.0,  1.0)
     };
 
-    VertexOut out;
+    VertexOut08 out;
     out.position = float4(positions[vertexID], 0.0, 1.0);
     out.uv = (positions[vertexID] + 1.0) * 0.5;
     return out;
@@ -41,7 +41,7 @@ float sdStar(float2 p, float r1, float r2, float sides, float angle) {
 }
 
 fragment float4 fragment_main8(
-    VertexOut in [[stage_in]],
+    VertexOut08 in [[stage_in]],
     constant float &time [[buffer(0)]],
     constant float2 &resolution [[buffer(1)]]
 ) {

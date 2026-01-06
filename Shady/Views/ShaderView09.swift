@@ -1,9 +1,10 @@
 //
-//  NinthShaderView.swift
+//  ShaderView09.swift
 //  Shady
 //
 //  Created by Junaid Dawud on 10/8/24.
 //
+//  Animated checker pattern strobe shader.
 
 import SwiftUI
 import MetalKit
@@ -82,8 +83,8 @@ class MetalView9: MTKView {
         // Set the compiled render pipeline state.
         renderEncoder.setRenderPipelineState(pipelineState)
 
-        // Increment the time uniform to create animation.
-        time += 0.016 // Approximately 1/60th of a second.
+        // Increment the time uniform to create animation based on frame rate.
+        time += 1.0 / Float(preferredFramesPerSecond)
         // Pass the 'time' value to the fragment shader at buffer index 0.
         renderEncoder.setFragmentBytes(&time, length: MemoryLayout<Float>.size, index: 0)
 
@@ -122,14 +123,10 @@ struct MetalBackgroundView9: UIViewRepresentable {
     }
 }
 
-// Displays the shader effect for view 9 of 12.
+/// Displays an animated checker pattern strobe shader effect.
 struct ShaderView09: View {
     var body: some View {
-        ZStack {
-            MetalBackgroundView9() // The Metal-rendered background.
-                .edgesIgnoringSafeArea(.all)
-
-            // Removed NavigationLink and related VStack
-        }
+        MetalBackgroundView9()
+            .edgesIgnoringSafeArea(.all)
     }
 }

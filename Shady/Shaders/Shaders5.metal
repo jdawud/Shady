@@ -9,13 +9,13 @@
 using namespace metal;
 
 // Structure to pass data from the vertex shader to the fragment shader
-struct VertexOut {
+struct VertexOut05 {
     float4 position [[position]];
     float2 uv; // UV coordinates to pass to the fragment shader
 };
 
 // Vertex shader
-vertex VertexOut vertex_main5(uint vertexID [[vertex_id]]) {
+vertex VertexOut05 vertex_main5(uint vertexID [[vertex_id]]) {
     float2 positions[4] = {
         float2(-1.0, -1.0),  // Bottom left
         float2( 1.0, -1.0),  // Bottom right
@@ -23,7 +23,7 @@ vertex VertexOut vertex_main5(uint vertexID [[vertex_id]]) {
         float2( 1.0,  1.0)   // Top right
     };
 
-    VertexOut out;
+    VertexOut05 out;
     out.position = float4(positions[vertexID], 0.0, 1.0);
     out.uv = (positions[vertexID] + 1.0) * 0.5; // Convert from [-1,1] to [0,1] UV space
     return out;
@@ -36,7 +36,7 @@ float sdCircle(float2 p, float2 center, float radius) {
 
 // Fragment shader
 fragment float4 fragment_main5(
-    VertexOut in [[stage_in]],
+    VertexOut05 in [[stage_in]],
     constant float &time [[buffer(0)]],
     constant float2 &resolution [[buffer(1)]]
 ) {

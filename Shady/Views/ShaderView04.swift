@@ -1,9 +1,10 @@
 //
-//  FourthShaderView.swift
+//  ShaderView04.swift
 //  Shady
 //
 //  Created by Junaid Dawud on 10/7/24.
 //
+//  Bouncing wave color effect shader.
 
 import SwiftUI
 import MetalKit
@@ -82,8 +83,8 @@ class MetalView4: MTKView {
         // Set the render pipeline state for the current rendering pass.
         renderEncoder.setRenderPipelineState(pipelineState)
 
-        // Increment the time uniform for animation effects.
-        time += 0.016 // Approximately 60 FPS
+        // Increment the time uniform for animation effects based on frame rate.
+        time += 1.0 / Float(preferredFramesPerSecond)
         // Pass the 'time' variable to the fragment shader at buffer index 0.
         renderEncoder.setFragmentBytes(&time, length: MemoryLayout<Float>.size, index: 0)
 
@@ -106,27 +107,19 @@ class MetalView4: MTKView {
     }
 }
 
-// Displays the shader effect for view 4 of 12.
+/// Displays a bouncing wave color effect shader.
 struct ShaderView04: View {
     var body: some View {
-        ZStack {
-            MetalBackgroundView4() // Embeds the Metal view for this shader.
-                .edgesIgnoringSafeArea(.all)
-
-            // Removed NavigationLink and related VStack
-        }
+        MetalBackgroundView4()
+            .edgesIgnoringSafeArea(.all)
     }
 }
 
-// UIViewRepresentable wrapper for MetalView4, used in ShaderView04.
+/// UIViewRepresentable wrapper for MetalView4.
 struct MetalBackgroundView4: UIViewRepresentable {
     func makeUIView(context: Context) -> MetalView4 {
-        // Create and return an instance of MetalView4.
         return MetalView4(frame: .zero, device: MTLCreateSystemDefaultDevice())
     }
 
     func updateUIView(_ uiView: MetalView4, context: Context) {}
 }
-
-
-

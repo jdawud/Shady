@@ -1,9 +1,10 @@
 //
-//  FifthShaderView.swift
+//  ShaderView05.swift
 //  Shady
 //
 //  Created by Junaid Dawud on 10/8/24.
 //
+//  Animated metaball blobs shader.
 
 import SwiftUI
 import MetalKit
@@ -80,8 +81,8 @@ class MetalView5: MTKView {
         // Set the current render pipeline state.
         renderEncoder.setRenderPipelineState(pipelineState)
 
-        // Update time for animation.
-        time += 0.016 // Approx 60 FPS
+        // Update time for animation based on frame rate.
+        time += 1.0 / Float(preferredFramesPerSecond)
         // Pass time to the fragment shader (buffer index 0).
         renderEncoder.setFragmentBytes(&time, length: MemoryLayout<Float>.size, index: 0)
 
@@ -102,22 +103,17 @@ class MetalView5: MTKView {
     }
 }
 
-// Displays the shader effect for view 5 of 12.
+/// Displays an animated metaball blobs shader effect.
 struct ShaderView05: View {
     var body: some View {
-        ZStack {
-            MetalBackgroundView5() // Embeds the Metal view for this shader.
-                .edgesIgnoringSafeArea(.all)
-
-            // Removed NavigationLink and related VStack
-        }
+        MetalBackgroundView5()
+            .edgesIgnoringSafeArea(.all)
     }
 }
 
-// UIViewRepresentable wrapper for MetalView5, used in ShaderView05.
+/// UIViewRepresentable wrapper for MetalView5.
 struct MetalBackgroundView5: UIViewRepresentable {
     func makeUIView(context: Context) -> MetalView5 {
-        // Create and return an instance of MetalView5.
         return MetalView5(frame: .zero, device: MTLCreateSystemDefaultDevice())
     }
 

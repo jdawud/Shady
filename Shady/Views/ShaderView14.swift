@@ -2,10 +2,9 @@
 //  ShaderView14.swift
 //  Shady
 //
-//  Created by Jules on 23/7/24
-//  SwiftUI View and Metal setup for the Lava Lamp shader (ShaderView14).
-//  This file defines the necessary components to integrate the Metal-based
-//  lava lamp effect (Shaders14.metal) into a SwiftUI application.
+//  Created by Jules on 23/7/24.
+//
+//  Animated lava lamp metaballs shader.
 //
 
 import SwiftUI

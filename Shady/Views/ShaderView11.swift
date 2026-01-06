@@ -4,6 +4,7 @@
 //
 //  Created by Junaid Dawud on 10/8/24.
 //
+//  Animated fireworks explosion shader.
 
 import SwiftUI
 import MetalKit
@@ -11,36 +12,18 @@ import MetalKit
 class MetalView11: MTKView {
     var commandQueue: MTLCommandQueue!
     var pipelineState: MTLRenderPipelineState!
-    var time: Float = 0 // Time uniform for animations.
-    var displayLink: CADisplayLink? // CADisplayLink can be used for vsync-timed drawing loop.
-    
-    // Deinitializer to ensure proper cleanup of resources.
-    deinit {
-        cleanup()
-    }
+    var time: Float = 0
     
     override init(frame: CGRect, device: MTLDevice?) {
         super.init(frame: frame, device: device)
-        self.device = device ?? MTLCreateSystemDefaultDevice() // Assign a Metal device.
-        setup() // Perform initial Metal setup.
+        self.device = device ?? MTLCreateSystemDefaultDevice()
+        setup()
     }
     
     required init(coder: NSCoder) {
         super.init(coder: coder)
-        self.device = MTLCreateSystemDefaultDevice() // Assign a Metal device.
-        setup() // Perform initial Metal setup.
-    }
-    
-    // Releases Metal and display link resources.
-    func cleanup() {
-        isPaused = true // Pause the MTKView's rendering loop.
-        displayLink?.invalidate() // Stop the display link.
-        displayLink = nil
-        commandQueue = nil // Release the command queue.
-        pipelineState = nil // Release the pipeline state.
-        // Releasing the device might be necessary if it's not shared or to signal completion.
-        device = nil
-        print("MetalView11 cleaned up") // For debugging
+        self.device = MTLCreateSystemDefaultDevice()
+        setup()
     }
     
     // Configures Metal resources: device, command queue, pipeline state.
@@ -101,8 +84,8 @@ class MetalView11: MTKView {
         // Set the render pipeline state.
         renderEncoder.setRenderPipelineState(pipelineState)
         
-        // Update and pass 'time' uniform.
-        time += 0.016 // Approx 60 FPS, though preferredFramesPerSecond is 30.
+        // Update and pass 'time' uniform based on frame rate.
+        time += 1.0 / Float(preferredFramesPerSecond)
         renderEncoder.setFragmentBytes(&time, length: MemoryLayout<Float>.size, index: 0)
         
         // Calculate and pass 'resolution' uniform.
@@ -120,59 +103,24 @@ class MetalView11: MTKView {
 }
 
 // UIViewRepresentable wrapper for MetalView11.
-// Handles the integration and lifecycle of MetalView11 within SwiftUI.
 struct MetalBackgroundView11: UIViewRepresentable {
-    // Binding to control the active state from the parent SwiftUI view.
-    @Binding var isActive: Bool
-    
-    // Creates the MetalView11 instance.
     func makeUIView(context: Context) -> MTKView {
         let mtkView = MetalView11(frame: .zero, device: MTLCreateSystemDefaultDevice())
-        mtkView.enableSetNeedsDisplay = true // Redraw on demand.
-        mtkView.preferredFramesPerSecond = 30 // Set desired frame rate.
-        mtkView.isPaused = !isActive // Set initial pause state.
+        mtkView.enableSetNeedsDisplay = true
+        mtkView.preferredFramesPerSecond = 30
+        mtkView.isPaused = false
         return mtkView
     }
     
-    // Updates the MetalView11 when SwiftUI state changes.
     func updateUIView(_ uiView: MTKView, context: Context) {
-        // If the view should no longer be active, trigger its cleanup.
-        if !isActive {
-            (uiView as? MetalView11)?.cleanup()
-        }
-        // Synchronize the paused state of the MTKView with the isActive binding.
-        uiView.isPaused = !isActive
-    }
-    
-    // Called when the view is removed from the SwiftUI hierarchy.
-    // Ensures that Metal resources are properly released.
-    static func dismantleUIView(_ uiView: MTKView, coordinator: ()) {
-        print("MetalBackgroundView11 dismantling, cleaning up MetalView11.") // For debugging
-        (uiView as? MetalView11)?.cleanup()
+        uiView.setNeedsDisplay()
     }
 }
 
-// Displays the shader effect for view 11 of 12.
-// This view manages the lifecycle of its Metal rendering through the `isActive` state.
+/// Displays an animated fireworks explosion shader effect.
 struct ShaderView11: View {
-    // Environment property to access presentation mode, useful for custom back navigation.
-    // Currently not used directly in this simplified view structure but kept for potential future use.
-    @Environment(\.presentationMode) var presentationMode
-    // State variable to control the activity of the Metal view.
-    @State private var isActive = true
-    
     var body: some View {
-        ZStack {
-            MetalBackgroundView11(isActive: $isActive)
-                .edgesIgnoringSafeArea(.all)
-            
-            // Removed NavigationLink and related VStack
-        }
-        // When the view disappears (e.g., due to navigation), set `isActive` to false.
-        // This signals `MetalBackgroundView11` to clean up resources.
-        .onDisappear {
-            print("ShaderView11 disappeared, setting isActive to false.") // For debugging
-            isActive = false
-        }
+        MetalBackgroundView11()
+            .edgesIgnoringSafeArea(.all)
     }
 }
